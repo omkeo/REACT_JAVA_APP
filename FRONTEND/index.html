@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank System Login & Registration</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="my-4">Bank System Login & Registration</h2>
+
+        <!-- Registration Form -->
+        <h4>Register</h4>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="registerUsername">Username</label>
+                <input type="text" class="form-control" id="registerUsername" placeholder="Enter username" required>
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input type="password" class="form-control" id="registerPassword" placeholder="Enter password" required>
+            </div>
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" class="form-control" id="registerEmail" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="registerFullName">Full Name</label>
+                <input type="text" class="form-control" id="registerFullName" placeholder="Enter full name" required>
+            </div>
+            <div class="form-group">
+                <label for="registerRole">Role</label>
+                <input type="text" class="form-control" id="registerRole" placeholder="Enter role (Admin/User)" required>
+            </div>
+            <div class="form-group">
+                <label for="registerPhoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="registerPhoneNumber" placeholder="Enter phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="registerAddress">Address</label>
+                <input type="text" class="form-control" id="registerAddress" placeholder="Enter address" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+
+        <!-- Login Form -->
+        <h4 class="my-4">Login</h4>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginUsername">Username</label>
+                <input type="text" class="form-control" id="loginUsername" placeholder="Enter username" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" class="form-control" id="loginPassword" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+        <div id="responseMessage" class="mt-4"></div>
+    </div>
+
+    <script>
+        // Register form submission handler
+        $("#registerForm").submit(function (e) {
+            e.preventDefault();  // Prevent form from reloading the page
+            const username = $("#registerUsername").val();
+            const password = $("#registerPassword").val();
+            const email = $("#registerEmail").val();
+            const fullName = $("#registerFullName").val();
+            const role = $("#registerRole").val();
+            const phoneNumber = $("#registerPhoneNumber").val();
+            const address = $("#registerAddress").val();
+
+            $.ajax({
+                url: "http://localhost:8080/api/users/register",  // Backend URL
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    username: username,
+                    password: password,
+                    email: email,
+                    fullName: fullName,
+                    role: role,
+                    phoneNumber: phoneNumber,
+                    address: address
+                }),
+                success: function (response) {
+                    $("#responseMessage").html(`<div class="alert alert-success">${response}</div>`);
+                },
+                error: function (xhr, status, error) {
+                    $("#responseMessage").html(`<div class="alert alert-danger">Error: ${xhr.responseText}</div>`);
+                }
+            });
+        });
+
+        // Login form submission handler
+        $("#loginForm").submit(function (e) {
+            e.preventDefault();  // Prevent form from reloading the page
+            const username = $("#loginUsername").val();
+            const password = $("#loginPassword").val();
+
+            $.ajax({
+                url: "http://localhost:8080/api/users/login",  // Backend URL
+                type: "POST",
+                data: { username: username, password: password },
+                success: function (response) {
+                    $("#responseMessage").html(`<div class="alert alert-success">${response}</div>`);
+                },
+                error: function (xhr, status, error) {
+                    $("#responseMessage").html(`<div class="alert alert-danger">Error: ${xhr.responseText}</div>`);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
